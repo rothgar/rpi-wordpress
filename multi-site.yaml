@@ -1,0 +1,81 @@
+version: '2'
+services:
+  caddy:
+    # Only 1 caddy container is needed even with multi sites
+    image: rothgar/rpi-caddy:v0.9.1
+    volumes:
+      # Put multiple sites in their own subfolders
+      # e.g. .data/wp/site1 and data/wp/site2
+      # Update Caddyfile to reflect the correct root
+      - "./.data/wp:/srv"
+    depends_on:
+      - mysql_site1
+      - mysql_site2
+      - php
+    ports:
+      - "80:80"
+      - "443:443"
+    restart: always
+
+  php:
+    image: rothgar/rpi-php:5.6
+    #build: php
+    links:
+      # make sure you change wp-config for each mysql hostname
+      - mysql_site1:site1db
+      - mysql_site2:site2db
+    volumes:
+      - "./.data/wp:/srv"
+    restart: always
+
+  mysql_site1:
+    image: rothgar/rpi-mysql:5.5
+    #build: mysql
+    volumes:
+      # notice the db folders are under site specific folders
+      - "./.data/db/site1:/var/lib/mysql"
+      - "./.data/backup/site1:/docker-entrypoint-initdb.d"
+    restart: always
+    environment:
+      # Change for your existing database
+      MYSQL_ROOT_PASSWORD: wordpress
+      # below values should match wp-config
+      MYSQL_DATABASE: blog
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: PASSWORD!!!
+
+  mysql_site2:
+    image: rothgar/rpi-mysql:5.5
+    #build: mysql
+    volumes:
+      - "./.data/db/site2:/var/lib/mysql"
+      - "./.data/backup/site2:/docker-entrypoint-initdb.d"
+    restart: always
+    environment:
+      # Change for your existing database
+      MYSQL_ROOT_PASSWORD: wordpress
+      # below values should match wp-config
+      MYSQL_DATABASE: blog
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: PASSWORD!!!
+
+# Use these images for dynamic DDNS updates
+# For Google domains use http://j.mp/2bRNYET
+# Make sure you update WWW and @ DNS entries
+# Make sure you have a new inadyn container for each site
+#
+#  inadyn_site1:
+#    image: rothgar/rpi-inadyn:1.99.15
+#    environment:
+#      SYSTEM: default@domains.google.com
+#      USERNAME: UUUUU
+#      PASSWORD: PPPPP
+#      ALIAS: example.com
+#
+#  inadyn_www_site1:
+#    image: rothgar/rpi-inadyn:1.99.15
+#    environment:
+#      SYSTEM: default@domains.google.com
+#      USERNAME: UUUUU
+#      PASSWORD: PPPPP
+#      ALIAS: www.example.com
