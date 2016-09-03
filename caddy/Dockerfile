@@ -1,5 +1,4 @@
 FROM resin/rpi-raspbian:jessie
-MAINTAINER Justin Garrison <justinleegarrison@gmail.com>
 
 # install deps
 RUN apt-get update && \
@@ -14,12 +13,8 @@ RUN mkdir -p /srv/wordpress && \
 
 ADD Caddyfile /srv/
 
-# download wordpress
-RUN curl -sL http://wordpress.org/latest.tar.gz | \
-    tar --strip 1 -xz -C /srv/wordpress
-
 EXPOSE 80 443
 
 WORKDIR /srv
 
-CMD service php5-fpm start && caddy
+CMD caddy
