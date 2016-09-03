@@ -37,3 +37,23 @@ services:
       MYSQL_DATABASE: blog
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: PASSWORD!!!
+
+# Use these images for dynamic DDNS updates
+# For Google domains use http://j.mp/2bRNYET
+# Make sure you update WWW and @ DNS entries
+#
+#  inadyn:
+#    image: rothgar/rpi-inadyn:1.99.15
+#    environment:
+#      SYSTEM: default@domains.google.com
+#      USERNAME: UUUUU
+#      PASSWORD: PPPPP
+#      ALIAS: example.com
+#
+#  inadyn_www:
+#    image: rothgar/rpi-inadyn:1.99.15
+#    environment:
+#      SYSTEM: default@domains.google.com
+#      USERNAME: UUUUU
+#      PASSWORD: PPPPP
+#      ALIAS: www.example.com
