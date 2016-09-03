@@ -1,0 +1,22 @@
+website {
+	root wordpress
+	gzip
+  # use php container for php files
+	fastcgi / php:9000 php
+	rewrite {
+	    if {path} not_match ^\/wp-admin
+	    to {path} {path}/ /index.php?_url={uri}
+	}
+}
+
+# optional website 2
+# website2 {
+# 	root wordpress/website2
+# 	gzip
+#   # use php container for php files
+# 	fastcgi / php:9000 php
+# 	rewrite {
+# 	    if {path} not_match ^\/wp-admin
+# 	    to {path} {path}/ /index.php?_url={uri}
+# 	}
+# }
