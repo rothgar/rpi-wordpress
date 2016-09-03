@@ -14,7 +14,8 @@ services:
     restart: always
 
   php:
-    build: php
+    image: rothgar/rpi-php:5.6
+    #build: php
     links:
       # make sure you change your wp-config
       - mysql:mysql
