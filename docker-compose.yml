@@ -1,31 +1,38 @@
 version: '2'
 services:
-  mysql:
-    image: rothgar/rpi-mysql:5.5
-    #build: mysql
+  caddy:
+    image: rothgar/rpi-caddy:v0.9.1
+    #build: caddy
     volumes:
-      - "./.data/db:/var/lib/mysql"
-      - "./.data/backup:/docker-entrypoint-initdb.d"
-    restart: always
-    environment:
-      # Change for your existing database
-      MYSQL_ROOT_PASSWORD: wordpress
-      MYSQL_DATABASE: blog
-      MYSQL_USER: wordpress
-      MYSQL_PASSWORD: tT70oL&FI&HF2XH7Mx6T^z48
-
-  wordpress:
-    image: rothgar/rpi-wordpress:latest
-    #build: wordpress
-    volumes:
-      - "./.data/wp:/srv/wordpress"
+      - "./.data/wp:/srv"
     depends_on:
       - mysql
-    links:
-      - mysql
+      - php
     ports:
       - "80:80"
       - "443:443"
     restart: always
+
+  php:
+    build: php
+    links:
+      # make sure you change your wp-config
+      - mysql:mysql
+    volumes:
+      - "./.data/wp:/srv"
+    restart: always
+
+  mysql:
+    image: rothgar/rpi-mysql:5.5
+    #build: mysql
+    volumes:
+      - "./.data/db/1n7:/var/lib/mysql"
+      - "./.data/backup/1n7:/docker-entrypoint-initdb.d"
+    restart: always
     environment:
-      VHOST: example.com
+      # Change for your existing database
+      MYSQL_ROOT_PASSWORD: wordpress
+      # below values should match wp-config
+      MYSQL_DATABASE: blog
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: PASSWORD!!!
