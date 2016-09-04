@@ -27,7 +27,7 @@ services:
     image: rothgar/rpi-mysql:5.5
     #build: mysql
     volumes:
-      - "./.data/db/1n7:/var/lib/mysql"
+      - "./.data/db:/var/lib/mysql"
       - "./.data/backup/1n7:/docker-entrypoint-initdb.d"
     restart: always
     environment:
