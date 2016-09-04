@@ -5,12 +5,12 @@ services:
     image: rothgar/rpi-caddy:v0.9.1
     volumes:
       # Put multiple sites in their own subfolders
-      # e.g. .data/wp/site1 and data/wp/site2
+      # e.g. .data/wp/www1 and data/wp/www2
       # Update Caddyfile to reflect the correct root
       - "./.data/wp:/srv"
     depends_on:
-      - mysql_site1
-      - mysql_site2
+      - mysql1
+      - mysql2
       - php
     ports:
       - "80:80"
@@ -22,13 +22,13 @@ services:
     #build: php
     links:
       # make sure you change wp-config for each mysql hostname
-      - mysql_site1:site1db
-      - mysql_site2:site2db
+      - mysql1:mysql1
+      - mysql2:mysql2
     volumes:
       - "./.data/wp:/srv"
     restart: always
 
-  mysql_site1:
+  mysql1:
     image: rothgar/rpi-mysql:5.5
     #build: mysql
     volumes:
@@ -44,7 +44,7 @@ services:
       MYSQL_USER: wordpress
       MYSQL_PASSWORD: PASSWORD!!!
 
-  mysql_site2:
+  mysql2:
     image: rothgar/rpi-mysql:5.5
     #build: mysql
     volumes:
@@ -64,7 +64,7 @@ services:
 # Make sure you update WWW and @ DNS entries
 # Make sure you have a new inadyn container for each site
 #
-#  inadyn_site1:
+#  inadyn1:
 #    image: rothgar/rpi-inadyn:1.99.15
 #    environment:
 #      SYSTEM: default@domains.google.com
@@ -72,7 +72,7 @@ services:
 #      PASSWORD: PPPPP
 #      ALIAS: example.com
 #
-#  inadyn_www_site1:
+#  inadyn_www1:
 #    image: rothgar/rpi-inadyn:1.99.15
 #    environment:
 #      SYSTEM: default@domains.google.com
