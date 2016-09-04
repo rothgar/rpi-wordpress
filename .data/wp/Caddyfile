@@ -1,4 +1,6 @@
-website {
+# set this to a web address if you want to enable tls or host multiple sites
+# eg: justingarrison.com www.justingarrison.com {
+:80 {
 	root www
 	gzip
 	# enable tls if you're using DDNS and
