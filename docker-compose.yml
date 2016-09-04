@@ -1,7 +1,7 @@
 version: '2'
 services:
   caddy:
-    image: rothgar/rpi-caddy:v0.9.1
+    image: rothgar/rpi-caddy:0.9.1
     #build: caddy
     volumes:
       - "./.data/wp:/srv"
