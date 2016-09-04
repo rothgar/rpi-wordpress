@@ -1,5 +1,5 @@
 website {
-	root wordpress
+	root www
 	gzip
   # use php container for php files
 	fastcgi / php:9000 php
@@ -11,7 +11,7 @@ website {
 
 # optional website 2
 # website2 {
-# 	root wordpress/website2
+# 	root www2
 # 	gzip
 #   # use php container for php files
 # 	fastcgi / php:9000 php
